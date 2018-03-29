@@ -1,9 +1,63 @@
+import java.time.LocalDate;
+
 
 public class Employee {
 
 	private String employeeName;
 	private long salary;
+	private LocalDate birthday;
 	
+	static int pensionRemainingAge = 65;
+	
+	public Employee(String employeeName, long salary, int age) {
+		super();
+		this.employeeName = employeeName;
+		this.salary = salary;
+		this.birthday = birthday;
+	}
+	
+	public Employee(String employeeName, int age) {
+		super();
+		this.employeeName = employeeName;
+		this.birthday = birthday;
+		
+		this.salary = LocalDate.now().getYear()-birthday.getYear()*10000;
+	}
+	
+	public int getRemainingYearsUntilPension() {
+		
+		
+		return pensionRemainingAge - getAge();
+	}
+
+	public static int getPensionRemainingAge() {
+		return pensionRemainingAge;
+	}
+
+	public static void setPensionRemainingAge(int pensionRemainingAge) {
+		Employee.pensionRemainingAge = pensionRemainingAge;
+	}
+	
+	public static Employee getYoungerEmployee(Employee employee1, Employee employee2) {
+		
+		if(employee1.getRemainingYearsUntilPension() > employee2.getRemainingYearsUntilPension())
+			return employee1;
+		else
+			return employee2;
+	}
+
+	@Override
+	public String toString() {
+		return "Employee [employeeName=" + employeeName + ", salary=" + salary
+				+ ", birthday=" + birthday
+				+ ", getRemainingYearsUntilPension()="
+				+ getRemainingYearsUntilPension() + "]";
+	}
+
+	public int getAge() {
+		return LocalDate.now().getYear()-birthday.getYear()*10000;
+	}
+
 	public long increaseSalary(long increase, long employeeSalary) {
 		
 		return employeeSalary+=increase;

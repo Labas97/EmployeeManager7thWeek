@@ -1,89 +1,87 @@
+import java.util.Scanner;
 
 public class Main {
 
 
 	public static void main(String[] args) {
-//		
-//		Employee employee= new Employee();
-////		employee.employeeName="MindlessWorker";
-////		employee.salary=1000;
-//		
-//		employee.setEmployeeName("MindlessWorker");
-//		employee.setSalary(1000);
-//		
-////		employee.salary=employee.increaseSalary(500, employee.salary);
-//		
-////		System.out.println(employee.displayInfo(employee.salary, employee.employeeName));
-//		
-//		Employee employee2 = new Employee();
-//		employee2.setEmployeeName("Pista");
-//		employee2.setSalary(2000);
-//		
-//		System.out.println(employee.displayInfo() + employee2.displayInfo());
-//		
-//		System.out.println(employee.isInSalaryRange(500, 3000)+"\n "+ employee.getTax()+"\n "+ employee.hasHigherSalary(employee2));
-//		
 		
-		Employee[] employeeArray= new Employee[10];
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("Please input the number of employees!");
+		int numberOfEmployees = scanner.nextInt();
 		
-		for (int i = 0; i < employeeArray.length; i++) {
-			
-			employeeArray[i]= new Employee();
-			employeeArray[i].setSalary(i*1000+i*200);
-			employeeArray[i].setEmployeeName("MindlessWorker"+i);
-			
+		Employee[] employees = new Employee[numberOfEmployees];
+		
+		for (int i = 0; i < employees.length; i++) {
+			System.out.println("Please input the name of the employee!");
+			String tempName = scanner.next();
+			System.out.println("Please input the age of the employee!");
+			int tempAge = scanner.nextInt();
+			employees[i] = new Employee(tempName, tempAge);
+			System.out.println(employees[i]);
 		}
 		
-		int maxIndex= 0;
+		Employee.setPensionRemainingAge(75);
 		
-		for (int i = 1; i < employeeArray.length; i++) {
-			
-			if (employeeArray[i].hasHigherSalary(employeeArray[maxIndex])) {
-				
-				maxIndex=i;
-			}
-			
+		for (Employee employee : employees) {
+			System.out.println(employee);
 		}
 		
-		int counter= 0;
-		long salaryStart= 3000;
-		long salaryEnd= 6000;
-		
-		for (Employee employee : employeeArray) {
-			
-			if (employee.isInSalaryRange(salaryStart, salaryEnd)) {
-				
-				counter++;
+		for (Employee employee : employees) {
+			if (employee.getRemainingYearsUntilPension() < 5) {
+				System.out.println(employee);
 			}
 		}
+		
+		int avgAgeRemaining = 0;
+	
+		for (Employee employee : employees) {
+			avgAgeRemaining = employee.getRemainingYearsUntilPension();
+		}
+		
+		avgAgeRemaining /= employees.length;
+		
+		for (Employee employee : employees) {
+			if (employee.getRemainingYearsUntilPension() > avgAgeRemaining) {
+				System.out.println(employee);
+			}
+		}
+	
+		for (int i = 0; i < employees.length; i++) {
 			
-		counter= 0;
-		for (int i = 0; i < employeeArray.length; i++) {
+			int max = i;
 			
-			if (employeeArray[i].isInSalaryRange(salaryStart, salaryEnd)) {
-				counter++;
+			for (int j = i+1; j < employees.length; j++) {
+				if (employees[max].getRemainingYearsUntilPension() < employees[j].getRemainingYearsUntilPension()) {
+					max = j;
+				}	
 			}
 			
+			Employee tempEmployee = new Employee(employees[i].getEmployeeName(), employees[i].getAge());
+			employees[i] = new Employee(employees[max].getEmployeeName(), employees[max].getAge());
+			employees[max] = new Employee(tempEmployee.getEmployeeName(), tempEmployee.getAge());
 		}
 		
-		long avg= 0;
+		for (Employee employee : employees) {
+			System.out.println(employees);
+		}
 		
-		for (Employee employee : employeeArray) {
+		for (int i = 0; i < employees.length; i++) {
 			
-			avg+=employee.getSalary();
-		}
-		
-		avg/=employeeArray.length;
-		
-		long sum=0;
-		
-		for (Employee employee : employeeArray) {
+			int min = i;
 			
-			sum+=employee.getTax();
+			for (int j = i+1; j < employees.length; j++) {
+				if (employees[min].getRemainingYearsUntilPension() > employees[j].getRemainingYearsUntilPension()) {
+					min = j;
+				}	
+			}
+			
+			Employee tempEmployee = new Employee(employees[i].getEmployeeName(), employees[i].getAge());
+			employees[i] = new Employee(employees[min].getEmployeeName(), employees[min].getAge());
+			employees[min] = new Employee(tempEmployee.getEmployeeName(), tempEmployee.getAge());
 		}
 		
-		System.out.println(sum + "   "+ avg+ "   "+ counter );
-		
+		for (Employee employee : employees) {
+			System.out.println(employees);
+		}
 	}
-
 }
